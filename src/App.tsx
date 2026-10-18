@@ -141,6 +141,7 @@ export default function App() {
 
   const charCount = inputText.length;
   const maxChars = 5000;
+  
 
   return (
     <div className="min-h-screen bg-slate-950 text-white relative overflow-hidden">
@@ -301,6 +302,12 @@ export default function App() {
                           Could not save to history — your analysis is still shown above.
                         </p>
                       )}
+                      <button
+  onClick={handleShare}
+  className="mt-4 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all flex items-center gap-2"
+>
+  📋 Share Threat Report
+</button>
                     </div>
                   </div>
 
