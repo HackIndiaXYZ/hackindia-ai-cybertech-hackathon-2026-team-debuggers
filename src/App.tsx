@@ -49,6 +49,7 @@ export default function App() {
   const [showExamples, setShowExamples] = useState(false);
   const [savedToHistory, setSavedToHistory] = useState(false);
   const [saveError, setSaveError] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const fetchHistory = useCallback(async () => {
     const { data, error } = await supabase
@@ -100,9 +101,17 @@ export default function App() {
     }
   }, [inputText, analyzing, fetchHistory]);
   const handleShare = () => {
-    const shareText = `🛡️ ScamGuard Threat Report:\nThreat Level: ${result?.riskLevel} (Score: ${result?.riskScore}%)\nSummary: ${result?.summary}\nCheck it out: https://scamguard-omega.vercel.app`;
+    const shareText = `🛡️ **ScamGuard Threat Audit Report**\n` +
+                      `━━━━━━━━━━━━━━━━━━━\n` +
+                      `• **Threat Level**: ${result?.riskLevel} (${result?.riskScore}% Risk Score)\n` +
+                      `• **Summary**: ${result?.summary}\n` +
+                      `━━━━━━━━━━━━━━━━━━━\n` +
+                      `Analyzed securely via ScamGuard Enterprise Engine.\n` +
+                      `🔗 Check it out: https://scamguard-omega.vercel.app`;
+
     navigator.clipboard.writeText(shareText);
-    alert('Scan report copied to clipboard!');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 3000);
   };
 
   const handleSelectHistory = useCallback((record: ScanRecord) => {
