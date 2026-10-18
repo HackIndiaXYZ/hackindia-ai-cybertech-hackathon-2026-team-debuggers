@@ -10,13 +10,13 @@ import {
   Phone,
   ChevronDown,
 } from 'lucide-react';
-import { analyzeText } from '@/lib/detector';
-import { supabase } from '@/lib/supabase';
+import { analyzeText } from './lib/detector';
+import { supabase } from './lib/supabase';
 import type { ScanResult, ScanRecord, RiskLevel } from '@/types';
-import RiskMeter from '@/components/RiskMeter';
-import IndicatorList from '@/components/IndicatorList';
-import CategoryBreakdown from '@/components/CategoryBreakdown';
-import HistoryPanel from '@/components/HistoryPanel';
+import RiskMeter from './components/RiskMeter';
+import IndicatorList from './components/IndicatorList';
+import CategoryBreakdown from './components/CategoryBreakdown';
+import HistoryPanel from './components/HistoryPanel';
 
 const exampleTexts = [
   {
@@ -74,27 +74,29 @@ export default function App() {
     setSavedToHistory(false);
     setSaveError(false);
 
-    // Simulate brief analysis delay for UX
-    await new Promise((r) => setTimeout(r, 500));
+    try {
+      const resultData = analyzeText(inputText);
+      setResult(resultData);
 
-    const analysis = analyzeText(inputText);
-    setResult(analysis);
-    setAnalyzing(false);
+      const { error: dbError } = await supabase.from('scans').insert({
+        input_text: inputText.trim(),
+        risk_score: resultData.riskScore,
+        risk_level: resultData.riskLevel,
+        detected_indicators: resultData.indicators,
+        summary: resultData.summary,
+      });
 
-    // Save to database
-    const { error } = await supabase.from('scans').insert({
-      input_text: inputText.trim(),
-      risk_score: analysis.riskScore,
-      risk_level: analysis.riskLevel,
-      detected_indicators: analysis.indicators,
-      summary: analysis.summary,
-    });
-
-    if (error) {
-      setSaveError(true);
-    } else {
-      setSavedToHistory(true);
-      fetchHistory();
+      if (dbError) {
+        console.error('Failed to save scan to database:', dbError);
+        setSaveError(true);
+      } else {
+        setSavedToHistory(true);
+        fetchHistory();
+      }
+    } catch (error) {
+      console.error("Failed to analyze text:", error);
+    } finally {
+      setAnalyzing(false);
     }
   }, [inputText, analyzing, fetchHistory]);
 
