@@ -99,6 +99,11 @@ export default function App() {
       setAnalyzing(false);
     }
   }, [inputText, analyzing, fetchHistory]);
+  const handleShare = () => {
+    const shareText = `🛡️ ScamGuard Threat Report:\nThreat Level: ${result?.riskLevel} (Score: ${result?.riskScore}%)\nSummary: ${result?.summary}\nCheck it out: https://scamguard-omega.vercel.app`;
+    navigator.clipboard.writeText(shareText);
+    alert('Scan report copied to clipboard!');
+  };
 
   const handleSelectHistory = useCallback((record: ScanRecord) => {
     setInputText(record.input_text);
