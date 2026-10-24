@@ -66,11 +66,13 @@ Analyze Threat
 Analyzes text, message content, or web URLs for fraud indicators.
 Endpoint: POST /api/analyze
 Content-Type: application/json
+
 Request Body
 {
   "type": "text", 
   "content": "URGENT: Your bank account has been suspended! Click here immediately to restore access: [http://bank-secure-login-verify.com](http://bank-secure-login-verify.com)"
 }
+
 Response Structure
 {
   "status": "success",
@@ -91,6 +93,7 @@ Response Structure
   }
 }
 
+
 ☁️ Deployment
 ScamGuard is optimized for one-click deployment on Vercel:
 Fork or push your project to GitHub.
@@ -98,10 +101,12 @@ Go to the Vercel Dashboard and click "Add New Project".
 Import the repository code-with-rajatkapoor/scamguard.
 In Environment Variables, add AI_API_KEY and any associated keys.
 Click Deploy.
+
 🔒 Privacy & Safety Statement
 ScamGuard does not store or share personal user credentials, submitted messages, or sensitive information.
 All checks are performed statelessly in secure serverless functions.
 Never input passwords, pin numbers, or sensitive financial data into scanner inputs.
+
 🤝 Contributing
 Contributions are always welcome! To contribute:
 Fork the repository.
@@ -109,9 +114,11 @@ Create your feature branch (git checkout -b feature/AmazingFeature).
 Commit your changes (git commit -m 'Add some AmazingFeature').
 Push to the branch (git push origin feature/AmazingFeature).
 Open a Pull Request.
+
 👨‍💻 Author & Maintainer
 Rajat Kapoor
 GitHub: @code-with-rajatkapoor
 Live Application: ScamGuard Web App
+
 📜 License
 This project is open-source under the MIT License.
